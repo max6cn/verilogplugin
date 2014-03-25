@@ -1,0 +1,79 @@
+<!--
+  ~ (C) Copyright  2014 @max6cn
+  ~ All rights reserved. This program and the accompanying materials
+  ~ are made available under the terms of the GNU Lesser General Public License
+  ~ (LGPL) version 2.1 which accompanies this distribution, and is available at
+  ~ http://www.gnu.org/licenses/lgpl-2.1.html
+  ~ This library is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  ~ Lesser General Public License for more details.
+  ~
+  ~ Contributors:
+  ~      @max6cn
+  -->
+
+<idea-plugin version="2">
+    <id>com.yourcompany.unique.plugin.id</id>
+    <name>VerilogPlugin</name>
+    <version>1.0</version>
+    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">Mark</vendor>
+
+    <description><![CDATA[
+      This is a test verilog language extension for IntelliJ IDEA.<br>
+      <small>test file extension first</small>
+      ]]></description>
+
+    <change-notes><![CDATA[
+      Change Name<br>
+      <small>most HTML tags may be used</small>
+      ]]>
+    </change-notes>
+
+    <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="107.105"/>
+
+    <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
+
+    <project-components>
+        <!-- Add your project components here -->
+    </project-components>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <fileTypeFactory implementation="com.verilogplugin.VerilogFileTypeFactory"/>
+        <lang.parserDefinition language="Verilog" implementationClass="com.verilogplugin.VerilogParserDefinition"/>
+        <lang.syntaxHighlighterFactory key="Verilog"
+                                       implementationClass="com.verilogplugin.highlight.VerilogSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="com.verilogplugin.highlight.VerilogColorSettingsPage"/>
+        <!--<annotator language="JAVA" implementationClass="com.verilogplugin.ide.annotator.VerilogAnnotator"/>-->
+        <!--<codeInsight.lineMarkerProvider language="JAVA"-->
+                                        <!--implementationClass="com.verilogplugin.ide.marker.VerilogLineMarkerProvider"/>-->
+        <!--<completion.contributor language="Verilog"-->
+                                <!--implementationClass="com.verilogplugin.ide.VerilogCompletionContributor"/>-->
+        <!--<psi.referenceContributor implementation="com.verilogplugin.ide.reference.VerilogReferenceContributor"/>-->
+        <!--<lang.findUsagesProvider language="Verilog" implementationClass="com.verilogplugin.ide.findUsages.VerilogFindUsagesProvider"/>-->
+        <!--<lang.refactoringSupport language="Verilog"-->
+                                 <!--implementationClass="com.verilogplugin.ide.refactoring.VerilogRefactoringSupportProvider"/>-->
+        <!--<lang.foldingBuilder language="JAVA" implementationClass="com.verilogplugin.ide.folding.VerilogFoldingBuilder"/>-->
+        <!--<gotoSymbolContributor implementation="com.verilogplugin.ide.VerilogChooseByNameContributor"/>-->
+        <!--<lang.psiStructureViewFactory language="Verilog"-->
+                                      <!--implementationClass="com.verilogplugin.ide.structureview.VerilogStructureViewFactory"/>-->
+        <!--<lang.formatter language="Verilog" implementationClass="com.verilogplugin.ide.formatting.VerilogFormattingModelBuilder"/>-->
+        <!--<codeStyleSettingsProvider implementation="com.verilogplugin.codestyle.VerilogCodeStyleSettingsProvider"/>-->
+        <!--<langCodeStyleSettingsProvider implementation="com.verilogplugin.codestyle.VerilogLanguageCodeStyleSettingsProvider"/>-->
+        <lang.commenter language="Verilog" implementationClass="com.verilogplugin.ide.commenter.VerilogCommenter"/>
+    </extensions>
+</idea-plugin>
