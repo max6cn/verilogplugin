@@ -4,9 +4,10 @@ Verilog Plugin for Intellij IDEA
 
 #### Status
 lexer and basic syntax highlighter finished
-![](https://github.com/max6cn/verilogplugin/blob/master/resources/setting.png)
+![](https://raw.githubusercontent.com/max6cn/verilogplugin/master/resources/setting.png)
 
 #### Features(Planed)
+
 * Lexer	
 * Syntax Highlighting
 * Parser
@@ -15,8 +16,8 @@ lexer and basic syntax highlighter finished
 * Color settings
 * Refrences and resolve
 * Code completion
-**  Reference completion
-**  contributor-based completion 
+  Reference completion
+  contributor-based completion 
 * Find Usages
 * Rename Refactoring
 * Safe Delete Refactoring
@@ -31,16 +32,17 @@ lexer and basic syntax highlighter finished
 * Stub Trees 
 * Documentation
 * Minor Features
-** code folding
-** Coment Code
-** Join Lines
-** Smart Enter
-** Naming suggestions
-** Sematic highlight usage
-** View |Parameter Info
-** To Do View
-** View |Conext info
-** Spellchecking 
+ code folding
+ Coment Code
+ Join Lines
+ Smart Enter
+ Naming suggestions
+ Sematic highlight usage
+ View |Parameter Info
+ To Do View
+ View |Conext info
+ Spellchecking 
+
 #### a3rd Party Tool Support
 * Synthesis Tools Support(include FPGA)
 * Simulation tools Support
