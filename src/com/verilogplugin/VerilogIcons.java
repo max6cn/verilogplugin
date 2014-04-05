@@ -20,9 +20,9 @@ import com.intellij.openapi.util.IconLoader;
 import javax.swing.*;
 
 public class VerilogIcons {
-    private static Icon load(String path) {
-        return IconLoader.getIcon(path, VerilogIcons.class);
-    }
+//    private static Icon load(String path) {
+//        return IconLoader.getIcon(path, VerilogIcons.class);
+//    }
 
-    public static final Icon FILE = IconLoader.getIcon("/resources/icons/jar-gray.png");
+    public static final Icon FILE = IconLoader.getIcon("/com/verilogplugin/icons/jar-gray.png");
 }

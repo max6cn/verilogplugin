@@ -358,15 +358,181 @@
       // extends(".*Expression")="expression"
 }
 
-/** http://www.vhdl.org/sv-ec/annexA_bnf_3_1_final.html */
-/** http://www.verilog.com/VerilogBNF.html */
-
-verilogFile ::= source_text *
-source_text	::= description *
-description	::= module_body?
-module_body ::= MODULE name_of_module ";" ENDMODULE {pin=3}
-
-name_of_module	::= id
-id ::= IDENTIFIER
-//{mixin="com.verilogplugin.psi.impl.VerilogNamedElementImpl" implements="com.verilogplugin.psi.VerilogNamedElement"}
-//
+input  ::=  module input |  defattr input | /* empty */
+attr   ::=  attr_opt
+left  attr_opt  ::= attr_opt ATTR_BEGIN opt_attr_list ATTR_END |    /* empty */
+defattr  ::= DEFATTR_BEGIN  opt_attr_list  DEFATTR_END;
+opt_attr_list ::=   attr_list | /* empty */
+left  attr_list ::= attr_assign |   attr_list ',' attr_assign;
+attr_assign ::= hierarchical_id  |  hierarchical_id '=' expr
+left  hierarchical_id ::=   TOK_ID  |   hierarchical_id '.' TOK_ID
+module ::=  attr TOK_MODULE TOK_ID  module_para_opt module_args_opt ';' module_body TOK_ENDMODULE
+module_para_opt ::= '#' '(' module_para_list ')' | /* empty */
+module_para_list ::=    single_module_para |    single_module_para ',' module_para_list |   /* empty */
+single_module_para ::=  TOK_PARAMETER  param_signed param_integer param_range single_param_decl
+module_args_opt ::= '(' ')' | '(' module_args optional_comma ')' | /* empty */
+left  module_args ::=   module_arg | module_args ',' module_arg
+optional_comma ::=  ',' | /* empty */
+module_arg_opt_assignment ::=   '=' expr  | /* empty */
+module_arg ::=
+    TOK_ID module_arg_opt_assignment |
+    attr wire_type range TOK_ID module_arg_opt_assignment;
+wire_type ::=    wire_type_token_list
+left  wire_type_token_list  ::= wire_type_token | wire_type_token_list wire_type_token
+wire_type_token ::= TOK_INPUT | TOK_OUTPUT  |   TOK_INOUT  |
+    TOK_WIRE | TOK_REG | TOK_INTEGER |      TOK_GENVAR |    TOK_SIGNED
+non_opt_range ::=
+    '[' expr ':' expr ']' |
+    '[' expr TOK_POS_INDEXED expr ']'  |
+    '[' expr TOK_NEG_INDEXED expr ']'  |
+    '[' expr ']'
+range ::=   non_opt_range  |    /* empty */
+range_or_integer ::=    range  |    TOK_INTEGER
+left  module_body ::=   module_body module_body_stmt |  /* empty */
+module_body_stmt ::=    task_func_decl | param_decl | localparam_decl | defparam_decl | wire_decl | assign_stmt
+| cell_stmt |
+    always_stmt | TOK_GENERATE module_gen_body TOK_ENDGENERATE | defattr | assert_
+task_func_decl ::= TOK_TASK TOK_ID ';' task_func_body TOK_ENDTASK |
+    TOK_FUNCTION opt_signed range_or_integer TOK_ID ';' task_func_body TOK_ENDFUNCTION
+opt_signed ::=  TOK_SIGNED  |   /* empty */
+left  task_func_body ::=    task_func_body behavioral_stmt |    /* empty */
+param_signed ::=    TOK_SIGNED | /* empty */
+param_integer ::=   TOK_INTEGER  | /* empty */
+                                                                                            2
+param_range ::= range ;
+param_decl ::=  TOK_PARAMETER  param_signed param_integer param_range param_decl_list ';'
+localparam_decl ::= TOK_LOCALPARAM  param_signed param_integer param_range param_decl_list ';'
+left  param_decl_list ::=   single_param_decl | param_decl_list ',' single_param_decl
+single_param_decl ::=   TOK_ID '=' expr
+defparam_decl ::=   TOK_DEFPARAM defparam_decl_list ';'
+left  defparam_decl_list ::=    single_defparam_decl | defparam_decl_list ',' single_defparam_decl
+single_defparam_decl ::=    range hierarchical_id '=' expr
+wire_decl ::=   attr wire_type range  wire_name_list ';'  | attr TOK_SUPPLY0 TOK_ID ';'  |
+    attr TOK_SUPPLY1 TOK_ID ';'
+left  wire_name_list ::=    wire_name_and_opt_assign | wire_name_list ',' wire_name_and_opt_assign
+wire_name_and_opt_assign ::=    wire_name | wire_name '=' expr
+wire_name ::=   TOK_ID range
+assign_stmt ::= TOK_ASSIGN assign_expr_list ';';
+left  assign_expr_list ::=  assign_expr | assign_expr_list ',' assign_expr;
+assign_expr ::= expr '=' expr
+cell_stmt ::=   attr TOK_ID  cell_parameter_list_opt cell_list ';'  |   attr tok_prim_wrapper  prim_list ';'
+tok_prim_wrapper ::=    TOK_PRIMITIVE  |    TOK_OR
+left  cell_list ::= single_cell |   cell_list ',' single_cell
+single_cell ::= TOK_ID  '(' cell_port_list ')'
+left  prim_list ::= single_prim |   prim_list ',' single_prim
+single_prim ::= single_cell |   /* no name */ '(' cell_port_list ')'
+cell_parameter_list_opt ::= '#' '(' cell_parameter_list ')' | /* empty */
+cell_parameter_list ::=
+    /* empty */ | cell_parameter |
+    cell_parameter ',' cell_parameter_list;
+cell_parameter ::=  expr  | '.' TOK_ID '(' expr ')'
+cell_port_list ::=  cell_port | cell_port ',' cell_port_list |  /* empty */ ','  cell_port_list | /* empty */
+cell_port ::=   expr |
+    '.' TOK_ID '(' expr ')'  |
+    '.' TOK_ID '(' ')'
+always_stmt ::= attr TOK_ALWAYS always_cond   behavioral_stmt  |
+    attr TOK_INITIAL behavioral_stmt
+always_cond ::= '@' '(' always_events ')' |
+    '@' '(' '*' ')' |
+    '@' ATTR_BEGIN ')' |
+    '@' '(' ATTR_END |
+    '@' '*' |   /* empty */
+left always_events ::=      always_event |
+    always_events TOK_OR always_event |
+    always_events ',' always_event
+always_event ::=    TOK_POSEDGE expr |  TOK_NEGEDGE expr  | expr
+opt_label ::=   ':' TOK_ID  |   /* empty */
+assert_ ::= TOK_ASSERT '(' expr ')' ';'
+simple_behavioral_stmt ::=  lvalue '=' expr  |  lvalue OP_LE expr
+// this production creates the obligatory if-else shift/reduce conflict
+behavioral_stmt ::= defattr | assert_ | wire_decl | simple_behavioral_stmt ';' |
+    hierarchical_id attr
+     opt_arg_list ';' |
+    attr TOK_BEGIN opt_label behavioral_stmt_list TOK_END opt_label |
+    attr TOK_FOR '(' simple_behavioral_stmt ';' expr ';' simple_behavioral_stmt ')'
+     behavioral_stmt |
+    attr TOK_IF '(' expr ')'
+     behavioral_stmt optional_else |
+    attr case_type '(' expr ')' opt_synopsys_attr case_body TOK_ENDCASE ;
+case_type ::=   TOK_CASE |  TOK_CASEX | TOK_CASEZ
+left opt_synopsys_attr ::= opt_synopsys_attr TOK_SYNOPSYS_FULL_CASE   | opt_synopsys_attr
+TOK_SYNOPSYS_PARALLEL_CASE |    /* empty */
+behavioral_stmt_opt ::= behavioral_stmt |   ';'
+left  behavioral_stmt_list ::=  behavioral_stmt_list behavioral_stmt |  /* empty */
+optional_else ::=   TOK_ELSE  behavioral_stmt | /* empty */
+left  case_body ::= case_body case_item |   /* empty */
+case_item ::= case_select  behavioral_stmt_opt
+left gen_case_body ::= gen_case_body gen_case_item |
+    /* empty */;
+gen_case_item ::=case_select  gen_stmt_or_null
+case_select ::= case_expr_list ':' |    TOK_DEFAULT
+left  case_expr_list ::=    TOK_DEFAULT  |  expr  | case_expr_list ',' expr
+rvalue ::= hierarchical_id '[' expr ']' '.' rvalue   |
+    hierarchical_id range |
+    hierarchical_id non_opt_range non_opt_range
+lvalue ::=  rvalue  |   '{' lvalue_concat_list '}'
+lvalue_concat_list ::=  expr  | expr ','
+opt_arg_list ::=    '(' arg_list optional_comma ')' |   /* empty */
+left  arg_list ::=  arg_list2 | /* empty */
+left  arg_list2 ::= single_arg |    arg_list ',' single_arg
+single_arg ::=  expr
+left  module_gen_body ::=   module_gen_body gen_stmt |  /* empty */
+// this production creates the obligatory if-else shift/reduce conflict
+gen_stmt ::=    TOK_FOR '(' simple_behavioral_stmt ';' expr simple_behavioral_stmt ')' gen_stmt_block |
+    TOK_IF '(' expr ')' gen_stmt_block opt_gen_else |
+    case_type '(' expr ')' gen_case_body TOK_ENDCASE |
+    TOK_BEGIN opt_label module_gen_body TOK_END opt_label |
+    module_body_stmt
+gen_stmt_block ::= gen_stmt
+gen_stmt_or_null ::=    gen_stmt_block | ';'
+                                4
+opt_gen_else ::=    TOK_ELSE gen_stmt_or_null | /* empty */
+expr ::=    basic_expr |
+    basic_expr '?' attr expr ':' expr
+left basic_expr ::=
+    rvalue |
+    '(' expr ')' TOK_CONST |
+    hierarchical_id TOK_CONST |
+    TOK_CONST |
+    TOK_STRING |
+    hierarchical_id attr '(' arg_list optional_comma ')'   |
+    TOK_TO_SIGNED attr '(' expr ')' |
+    TOK_TO_UNSIGNED attr '(' expr ')' |
+    '(' expr ')' |
+    '{' concat_list '}' |
+    '{' expr '{' expr '}' '}' |
+    '~' attr basic_expr   |
+    basic_expr '&' attr basic_expr |
+    basic_expr '|' attr basic_expr |
+    basic_expr '^' attr basic_expr |
+    basic_expr OP_XNOR attr basic_expr |
+    '&' attr basic_expr   |
+    OP_NAND attr basic_expr |
+    '|' attr basic_expr   |
+    OP_NOR attr basic_expr   |
+    '^' attr basic_expr   |
+    OP_XNOR attr basic_expr   |
+    basic_expr OP_SHL attr basic_expr |
+    basic_expr OP_SHR attr basic_expr |
+    basic_expr OP_SSHL attr basic_expr |
+    basic_expr OP_SSHR attr basic_expr |
+    basic_expr '<' attr basic_expr |
+    basic_expr OP_LE attr basic_expr |
+    basic_expr OP_EQ attr basic_expr |
+    basic_expr OP_NE attr basic_expr |
+    basic_expr OP_EQX attr basic_expr |
+    basic_expr OP_NEX attr basic_expr |
+    basic_expr OP_GE attr basic_expr |
+    basic_expr '>' attr basic_expr |
+    basic_expr '+' attr basic_expr |
+    basic_expr '-' attr basic_expr |
+    basic_expr '*' attr basic_expr |
+    basic_expr '/' attr basic_expr |
+    basic_expr '%' attr basic_expr |
+    basic_expr OP_POW attr basic_expr |
+    '+' attr basic_expr   |
+    '-' attr basic_expr   |
+    basic_expr OP_LAND attr basic_expr |
+    basic_expr OP_LOR attr basic_expr |
+    '!' attr basic_expr
+concat_list ::= expr  | expr ',' concat_list

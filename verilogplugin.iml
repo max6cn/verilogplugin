@@ -7,6 +7,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/testData" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/o1/test" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="IDEA IC-136.SNAPSHOT" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
