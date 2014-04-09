@@ -3,7 +3,9 @@
 Verilog Plugin for Intellij IDEA
 
 #### Status
-lexer and basic syntax highlighter finished
+* working on lexer and basic syntax highlighter
+* parser
+
 ![](https://raw.githubusercontent.com/max6cn/verilogplugin/master/resources/setting.png)
 
 #### Features(Planed)
@@ -43,7 +45,7 @@ lexer and basic syntax highlighter finished
  View |Conext info
  Spellchecking 
 
-#### a3rd Party Tool Support
+#### 3rd Party Tool Support
 * Synthesis Tools Support(include FPGA)
 * Simulation tools Support
 * Linter
