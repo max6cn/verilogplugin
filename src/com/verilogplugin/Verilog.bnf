@@ -15,6 +15,7 @@
 {
   // psiImplUtilClass="com.verilogplugin.util.VerilogPsiImplUtil"
   parserClass="com.verilogplugin.parser.VerilogParser"
+  parserUtilClass="com.verilogplugin.parser.VerilogParserUtil"
   // parserUtilClass="com.verilogplugin.parser.VerilogParserUtil"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
@@ -37,346 +38,155 @@
  * http://hackage.haskell.org/package/verilog-0.0.2/docs/Language-Verilog-Tokens.html
  * http://hackage.haskell.org/package/verilog-0.0.2/docs/src/Language-Verilog-Parse.html
 */
+
   tokens = [
+    TOK_MODULE=                      'module'
+    TOK_ENDMODULE=                   'endmodule'
+    TOK_FUNCTION=                    'function'
+    TOK_ENDFUNCTION=                 'endfunction'
+    TOK_TASK=                        'task'
+    TOK_ENDTASK=                     'endtask'
+    TOK_PARAMETER=                   'parameter'
+    TOK_LOCALPARAM=                  'localparam'
+    TOK_DEFPARAM=                    'defparam'
+    TOK_ASSIGN=                      'assign'
+    TOK_ALWAYS=                      'always'
+    TOK_INITIAL=                     'initial'
+    TOK_BEGIN=                       'begin'
+    TOK_END=                         'end'
+    TOK_IF=                          'if'
+    TOK_ELSE=                        'else'
+    TOK_FOR=                         'for'
+    TOK_POSEDGE=                     'posedge'
+    TOK_NEGEDGE=                     'negedge'
+    TOK_OR=                          'or'
+    TOK_CASE=                        'case'
+    TOK_CASEX=                       'casex'
+    TOK_CASEZ=                       'casez'
+    TOK_ENDCASE=                     'endcase'
+    TOK_DEFAULT=                     'default'
+    TOK_GENERATE=                    'generate'
+    TOK_ENDGENERATE=                 'endgenerate'
 
-//      Id_simple                 = "regexp:[a-zA-Z_][a-zA-Z0-9_\$]*"
-//      Id_system                 = "regexp:\$[a-zA-Z0-9_\$] [a-zA-Z0-9_\$]*"
-//      Lit_number_unsigned       ="regexp:\d\+"
-//      Lit_number                ="regexp:-\d\+"
-//      Lit_string                = "regexp:\"[^\r\n]*\""
-      ALIAS                  = "alias"
-      ALWAYS                 = "always"
-      ALWAYS_COMB            = "always_comb"
-      ALWAYS_FF              = "always_ff"
-      ALWAYS_LATCH           = "always_latch"
-      AND                    = "and"
-      ASSERT                 = "assert"
-      ASSIGN                 = "assign"
-      ASSUME                 = "assume"
-      AUTOMATIC              = "automatic"
-      BEFORE                 = "before"
-      BEGIN                  = "begin"
-      BIND                   = "bind"
-      BINS                   = "bins"
-      BINSOF                 = "binsof"
-      BIT                    = "bit"
-      BREAK                  = "break"
-      BUF                    = "buf"
-      BUFIF0                 = "bufif0"
-      BUFIF1                 = "bufif1"
-      BYTE                   = "byte"
-      CASE                   = "case"
-      CASEX                  = "casex"
-      CASEZ                  = "casez"
-      CELL                   = "cell"
-      CHANDLE                = "chandle"
-      CLASS                  = "class"
-      CLOCKING               = "clocking"
-      CMOS                   = "cmos"
-      CONFIG                 = "config"
-      CONST                  = "const"
-      CONSTRAINT             = "constraint"
-      CONTEXT                = "context"
-      CONTINUE               = "continue"
-      COVER                  = "cover"
-      COVERGROUP             = "covergroup"
-      COVERPOINT             = "coverpoint"
-      CROSS                  = "cross"
-      DEASSIGN               = "deassign"
-      DEFAULT                = "default"
-      DEFPARAM               = "defparam"
-      DESIGN                 = "design"
-      DISABLE                = "disable"
-      DIST                   = "dist"
-      DO                     = "do"
-      EDGE                   = "edge"
-      ELSE                   = "else"
-      END                    = "end"
-      ENDCASE                = "endcase"
-      ENDCLASS               = "endclass"
-      ENDCLOCKING            = "endclocking"
-      ENDCONFIG              = "endconfig"
-      ENDFUNCTION            = "endfunction"
-      ENDGENERATE            = "endgenerate"
-      ENDGROUP               = "endgroup"
-      ENDINTERFACE           = "endinterface"
-      ENDMODULE              = "endmodule"
-      ENDPACKAGE             = "endpackage"
-      ENDPRIMITIVE           = "endprimitive"
-      ENDPROGRAM             = "endprogram"
-      ENDPROPERTY            = "endproperty"
-      ENDSPECIFY             = "endspecify"
-      ENDSEQUENCE            = "endsequence"
-      ENDTABLE               = "endtable"
-      ENDTASK                = "endtask"
-      ENUM                   = "enum"
-      EVENT                  = "event"
-      EXPECT                 = "expect"
-      EXPORT                 = "export"
-      EXTENDS                = "extends"
-      EXTERN                 = "extern"
-      FINAL                  = "final"
-      FIRST_MATCH            = "first_match"
-      FOR                    = "for"
-      FORCE                  = "force"
-      FOREACH                = "foreach"
-      FOREVER                = "forever"
-      FORK                   = "fork"
-      FORKJOIN               = "forkjoin"
-      FUNCTION               = "function"
-      FUNCTION_PROTOTYPE     = "function_prototype"
-      GENERATE               = "generate"
-      GENVAR                 = "genvar"
-      HIGHZ0                 = "highz0"
-      HIGHZ1                 = "highz1"
-      IF                     = "if"
-      IFF                    = "iff"
-      IFNONE                 = "ifnone"
-      IGNORE_BINS            = "ignore_bins"
-      ILLEGAL_BINS           = "illegal_bins"
-      IMPORT                 = "import"
-      INCDIR                 = "incdir"
-      INCLUDE                = "include"
-      INITIAL                = "initial"
-      INOUT                  = "inout"
-      INPUT                  = "input"
-      INSIDE                 = "inside"
-      INSTANCE               = "instance"
-      INT                    = "int"
-      INTEGER                = "integer"
-      INTERFACE              = "interface"
-      INTERSECT              = "intersect"
-      JOIN                   = "join"
-      JOIN_ANY               = "join_any"
-      JOIN_NONE              = "join_none"
-      LARGE                  = "large"
-      LIBLIST                = "liblist"
-      LIBRARY                = "library"
-      LOCAL                  = "local"
-      LOCALPARAM             = "localparam"
-      LOGIC                  = "logic"
-      LONGINT                = "longint"
-      MACROMODULE            = "macromodule"
-      MATCHES                = "matches"
-      MEDIUM                 = "medium"
-      MODPORT                = "modport"
-      MODULE                 = "module"
-      NAND                   = "nand"
-      NEGEDGE                = "negedge"
-      NEW                    = "new"
-      NMOS                   = "nmos"
-      NOR                    = "nor"
-      NOSHOWCANCELLED        = "noshowcancelled"
-      NOT                    = "not"
-      NOTIF0                 = "notif0"
-      NOTIF1                 = "notif1"
-      NULL                   = "null"
-      OPTION                 = "option"
-      OR                     = "or"
-      OUTPUT                 = "output"
-      PACKAGE                = "package"
-      PACKED                 = "packed"
-      PARAMETER              = "parameter"
-      PATHPULSE_DOLLAR       = "pathpulse_dollar"
-      PMOS                   = "pmos"
-      POSEDGE                = "posedge"
-      PRIMITIVE              = "primitive"
-      PRIORITY               = "priority"
-      PROGRAM                = "program"
-      PROPERTY               = "property"
-      PROTECTED              = "protected"
-      PULL0                  = "pull0"
-      PULL1                  = "pull1"
-      PULLDOWN               = "pulldown"
-      PULLUP                 = "pullup"
-      PULSESTYLE_ONEVENT     = "pulsestyle_onevent"
-      PULSESTYLE_ONDETECT    = "pulsestyle_ondetect"
-      PURE                   = "pure"
-      RAND                   = "rand"
-      RANDC                  = "randc"
-      RANDCASE               = "randcase"
-      RANDSEQUENCE           = "randsequence"
-      RCMOS                  = "rcmos"
-      REAL                   = "real"
-      REALTIME               = "realtime"
-      REF                    = "ref"
-      REG                    = "reg"
-      RELEASE                = "release"
-      REPEAT                 = "repeat"
-      RETURN                 = "return"
-      RNMOS                  = "rnmos"
-      RPMOS                  = "rpmos"
-      RTRAN                  = "rtran"
-      RTRANIF0               = "rtranif0"
-      RTRANIF1               = "rtranif1"
-      SCALARED               = "scalared"
-      SEQUENCE               = "sequence"
-      SHORTINT               = "shortint"
-      SHORTREAL              = "shortreal"
-      SHOWCANCELLED          = "showcancelled"
-      SIGNED                 = "signed"
-      SMALL                  = "small"
-      SOLVE                  = "solve"
-      SPECIFY                = "specify"
-      SPECPARAM              = "specparam"
-      STATIC                 = "static"
-      STRENGTH0              = "strength0"
-      STRENGTH1              = "strength1"
-      STRING                 = "string"
-      STRONG0                = "strong0"
-      STRONG1                = "strong1"
-      STRUCT                 = "struct"
-      SUPER                  = "super"
-      SUPPLY0                = "supply0"
-      SUPPLY1                = "supply1"
-      TABLE                  = "table"
-      TAGGED                 = "tagged"
-      TASK                   = "task"
-      THIS                   = "this"
-      THROUGHOUT             = "throughout"
-      TIME                   = "time"
-      TIMEPRECISION          = "timeprecision"
-      TIMEUNIT               = "timeunit"
-      TRAN                   = "tran"
-      TRANIF0                = "tranif0"
-      TRANIF1                = "tranif1"
-      TRI                    = "tri"
-      TRI0                   = "tri0"
-      TRI1                   = "tri1"
-      TRIAND                 = "triand"
-      TRIOR                  = "trior"
-      TRIREG                 = "trireg"
-      TYPE                   = "type"
-      TYPEDEF                = "typedef"
-      TYPE_OPTION            = "type_option"
-      UNION                  = "union"
-      UNIQUE                 = "unique"
-      UNSIGNED               = "unsigned"
-      USE                    = "use"
-      VAR                    = "var"
-      VECTORED               = "vectored"
-      VIRTUAL                = "virtual"
-      VOID                   = "void"
-      WAIT                   = "wait"
-      WAIT_ORDER             = "wait_order"
-      WAND                   = "wand"
-      WEAK0                  = "weak0"
-      WEAK1                  = "weak1"
-      WHILE                  = "while"
-      WILDCARD               = "wildcard"
-      WIRE                   = "wire"
-      WITH                   = "with"
-      within                 = "within"
-      WOR                    = "wor"
-      XNOR                   = "xnor"
-      XOR                    = "xor"
+    //TOK_ASSERT=                       "assert"([ \t\r\n]+"property")?
 
-      PAREN_L               ="("
-      PAREN_R               =")"
-      BRACK_L               ="["
-      BRACK_R               = "]"
-      BRACE_L               = "{"
-      BRACE_R               = "}"
-      TILDY                 = "~"
-      BANG                  = "!"
-      AT                    = "@"
-      POUND                 = "#"
-      PERCENT               = "%"
-      HAT                   = "^"
-      AMP                   = "&"
-      BAR                   = "|"
-      ASTER                 = "*"
-      DOT                   = "."
-      COMMA                 = ","
-      COLON                 = ":"
-      SEMI                  = ";"
-      EQ                    = "="
-      LT                    = "<"
-      GT                    = ">"
-      PLUS                  = "+"
-      DASH                  = "-"
-      QUESTION              = "?"
-      SLASH                 = "/"
-      DOLLAR                = "$"
-      S_QUOTE               = "'"
-      TILDY_AMP             = "~&"
-      TILDY_BAR             = "~|"
-      TILDY_HAT             = "~^"
-      HAT_TILDY             = "^~"
-      EQ_EQ                 = "=="
-      BANG_EQ               = "!="
-      AMP_AMP               = "&&"
-      BAR_BAR               = "||"
-      ASTER_ASTER           = "**"
-      LT_EQ                 = "<="
-      GT_EQ                 = ">="
-      GT_GT                 = ">>"
-      LT_LT                 = "<<"
-      PLUS_PLUS             = "++"
-      DASH_DASH             = "--"
-      PLUS_EQ               = "+="
-      DASH_EQ               = "-="
-      ASTER_EQ              = "*="
-      SLASH_EQ              = "/="
-      PERCENT_EQ            = "%="
-      AMP_EQ                = "&="
-      BAR_EQ                = "|="
-      HAT_EQ                = "^="
-      PLUS_COLON            = "+:"
-      DASH_COLON            = "-:"
-      COLON_COLON           = "::"
-      DOT_ASTER             = ".*"
-      DASH_GT               = "->"
-      COLON_EQ              = ":="
-      COLON_SLASH           = ":/"
-      POUND_POUND           = "##"
-      BRACK_L_ASTER         = "[*"
-      BRACK_L_EQ            = "[="
-      EQ_GT                 ="=>"
-      AT_ASTER              = "@*"
-      PAREN_L_ASTER         = "(*"
-      ASTER_PAREN_R         = "*)"
-      ASTER_GT              = "*>"
-      EQ_EQ_EQ              = "==="
-      BANG_EQ_EQ            = "!=="
-      EQ_QUESTION_EQ        = "=?="
-      BANG_QUESTION_EQ      = "!?="
-      GT_GT_GT              = ">>>"
-      LT_LT_LT              = "<<<"
-      LT_LT_EQ              = "<<="
-      GT_GT_EQ              = ">>="
-      BAR_DASH_GT           = "|->"
-      BAR_EQ_GT             = "|=>"
-      BRACK_L_DASH_GT       = "[->"
-      AT_AT_PAREN_L         = "@@("
-      PAREN_L_ASTER_PAREN_R = "(*)"
-      DASH_GT_GT            = "->>"
-      AMP_AMP_AMP           = "&&&"
-      LT_LT_LT_EQ           = "<<<="
-      GT_GT_GT_EQ           = ">>>="
+    TOK_INPUT=                        'input'
+    TOK_OUTPUT=                       'output'
+    TOK_INOUT=                        'inout'
+    TOK_WIRE=                         'wire'
+    TOK_REG=                          'reg'
+    TOK_INTEGER=                      'integer'
+    TOK_SIGNED=                       'signed'
+    TOK_GENVAR=                       'genvar'
+
+    // TOK_CONST=
+
+    // TOK_STRING =
+
+    TOK_PRIMITIVE = 'regexp:and|nand|or|nor|xor|xnor|not|buf|bufif0|bufif1|notif0|notif1'
+
+
+    TOK_SUPPLY0 = 'supply0'
+    TOK_SUPPLY1 = 'supply1'
+
+    //IDENTIFIER = "$"(display|time|stop|finish)
+
+    TOK_TO_SIGNED = '$signed'
+    TOK_TO_UNSIGNED = '$unsigned'
+
+    //IDENTIFIER = [a-zA-Z_$][a-zA-Z0-9_$]*
+
+    // SYNOPSYS_TRANSLATE_OFF
+
+    // SYNOPSYS_FLAGS
+
+
+
+    ATTR_BEGIN               ='(*'
+    ATTR_END                 ='*)'
+
+    DEFATTR_BEGIN            ='{*'
+    DEFATTR_END              ='*}'
+
+    OP_POW                   ='**'
+    OP_LOR                   ='||'
+    OP_LAND                  ='&&'
+    OP_EQ                    ='=='
+    OP_NE                    ='!='
+    OP_LE                    ='<='
+    OP_GE                    ='>='
+
+    OP_EQX                   ='==='
+    OP_NEX                   ='!=='
+
+    OP_NAND                  ='~&'
+    OP_NOR                   ='~|'
+    OP_XNOR                  ='~^'
+    OP_XNOR                  ='^~'
+
+    OP_SHL                   ='<<'
+    OP_SHR                   ='>>'
+    OP_SSHL                  ='<<<'
+    OP_SSHR                  ='>>>'
+
+    TOK_POS_INDEXED         ='+:'
+    TOK_NEG_INDEXED         ='-:'
+
+    TOK_INTEGER             ='regexp:[0-9][0-9]+'
+
+    IDENTIFIER              = 'regexp:\p{Alpha}\w*'
+    //'/*' { BEGIN(COMMENT)=
+    //<COMMENT>.    /* ignore comment body */
+    //<COMMENT>\n   /* ignore comment body */
+    //<COMMENT>'*/' { BEGIN(0)=
+    //
+    //[ \t\r\n]               /* ignore whitespaces */
+    //\\[\r\n]                /* ignore continuation sequence */
+    //'//'[^\r\n]*            /* ignore one-line comments */
+    //'#"[$a-zA-Z_0-9\.]+     /* ignore simulation timings */
+
+
+
+
+
       ]
-      // extends(".*Expression")="expression"
+  extends(".*_expr")=expr               // make AST for literal one level deep: FileNode/LiteralExpr
 }
 
-input  ::=  module input |  defattr input | /* empty */
-attr   ::=  attr_opt
-left  attr_opt  ::= attr_opt ATTR_BEGIN opt_attr_list ATTR_END |    /* empty */
-defattr  ::= DEFATTR_BEGIN  opt_attr_list  DEFATTR_END;
-opt_attr_list ::=   attr_list | /* empty */
-left  attr_list ::= attr_assign |   attr_list ',' attr_assign;
-attr_assign ::= hierarchical_id  |  hierarchical_id '=' expr
-left  hierarchical_id ::=   TOK_ID  |   hierarchical_id '.' TOK_ID
-module ::=  attr TOK_MODULE TOK_ID  module_para_opt module_args_opt ';' module_body TOK_ENDMODULE
-module_para_opt ::= '#' '(' module_para_list ')' | /* empty */
-module_para_list ::=    single_module_para |    single_module_para ',' module_para_list |   /* empty */
-single_module_para ::=  TOK_PARAMETER  param_signed param_integer param_range single_param_decl
-module_args_opt ::= '(' ')' | '(' module_args optional_comma ')' | /* empty */
-left  module_args ::=   module_arg | module_args ',' module_arg
+input  ::=  module  input |  defattr input | /* empty */
+private attr   ::=  attr_opt
+private left  attr_opt  ::= attr_opt ATTR_BEGIN opt_attr_list ATTR_END |    /* empty */
+private defattr  ::= DEFATTR_BEGIN  opt_attr_list  DEFATTR_END;
+private opt_attr_list ::=   attr_list | /* empty */
+private left  attr_list ::= attr_assign |   attr_list ',' attr_assign;
+private attr_assign ::= hierarchical_id  |  hierarchical_id '=' expr
+left  hierarchical_id ::=   IDENTIFIER  |   hierarchical_id '.' <<TOK_ID>>
+// see nonStrictID
+id ::= IDENTIFIER
+
+module ::=  attr TOK_MODULE IDENTIFIER  module_para_opt module_args_opt ';' module_body TOK_ENDMODULE { recoverWhile="top_recover" pin=2}
+
+top_recover ::= !("module"|DEFATTR_BEGIN|ATTR_BEGIN)
+
+private module_para_opt ::= '#' '(' module_para_list ')' | /* empty */
+
+private module_para_list ::=    single_module_para |    single_module_para ',' module_para_list |   /* empty */
+
+private single_module_para ::=  TOK_PARAMETER  param_signed param_integer param_range single_param_decl
+
+private module_args_opt ::= '(' ')' | '(' module_args optional_comma ')' | /* empty */
+
+
+prive left module_args ::=   module_arg  | module_args ',' module_arg
+//{ recoverWhile="arg_recover" }
+//private arg_recover ::= !(IDENTIFIER | ',' | ')' )
+
 optional_comma ::=  ',' | /* empty */
+
 module_arg_opt_assignment ::=   '=' expr  | /* empty */
-module_arg ::=
-    TOK_ID module_arg_opt_assignment |
-    attr wire_type range TOK_ID module_arg_opt_assignment;
+
+module_arg ::=    IDENTIFIER module_arg_opt_assignment |    attr wire_type range IDENTIFIER module_arg_opt_assignment;
+
 wire_type ::=    wire_type_token_list
 left  wire_type_token_list  ::= wire_type_token | wire_type_token_list wire_type_token
 wire_type_token ::= TOK_INPUT | TOK_OUTPUT  |   TOK_INOUT  |
@@ -392,8 +202,8 @@ left  module_body ::=   module_body module_body_stmt |  /* empty */
 module_body_stmt ::=    task_func_decl | param_decl | localparam_decl | defparam_decl | wire_decl | assign_stmt
 | cell_stmt |
     always_stmt | TOK_GENERATE module_gen_body TOK_ENDGENERATE | defattr | assert_
-task_func_decl ::= TOK_TASK TOK_ID ';' task_func_body TOK_ENDTASK |
-    TOK_FUNCTION opt_signed range_or_integer TOK_ID ';' task_func_body TOK_ENDFUNCTION
+task_func_decl ::= TOK_TASK IDENTIFIER ';' task_func_body TOK_ENDTASK |
+    TOK_FUNCTION opt_signed range_or_integer IDENTIFIER ';' task_func_body TOK_ENDFUNCTION
 opt_signed ::=  TOK_SIGNED  |   /* empty */
 left  task_func_body ::=    task_func_body behavioral_stmt |    /* empty */
 param_signed ::=    TOK_SIGNED | /* empty */
@@ -403,33 +213,33 @@ param_range ::= range ;
 param_decl ::=  TOK_PARAMETER  param_signed param_integer param_range param_decl_list ';'
 localparam_decl ::= TOK_LOCALPARAM  param_signed param_integer param_range param_decl_list ';'
 left  param_decl_list ::=   single_param_decl | param_decl_list ',' single_param_decl
-single_param_decl ::=   TOK_ID '=' expr
+single_param_decl ::=   IDENTIFIER '=' expr
 defparam_decl ::=   TOK_DEFPARAM defparam_decl_list ';'
 left  defparam_decl_list ::=    single_defparam_decl | defparam_decl_list ',' single_defparam_decl
 single_defparam_decl ::=    range hierarchical_id '=' expr
-wire_decl ::=   attr wire_type range  wire_name_list ';'  | attr TOK_SUPPLY0 TOK_ID ';'  |
-    attr TOK_SUPPLY1 TOK_ID ';'
+wire_decl ::=   attr wire_type range  wire_name_list ';'  | attr TOK_SUPPLY0 IDENTIFIER ';'  |
+    attr TOK_SUPPLY1 IDENTIFIER ';'
 left  wire_name_list ::=    wire_name_and_opt_assign | wire_name_list ',' wire_name_and_opt_assign
 wire_name_and_opt_assign ::=    wire_name | wire_name '=' expr
-wire_name ::=   TOK_ID range
+wire_name ::=   IDENTIFIER range
 assign_stmt ::= TOK_ASSIGN assign_expr_list ';';
 left  assign_expr_list ::=  assign_expr | assign_expr_list ',' assign_expr;
 assign_expr ::= expr '=' expr
-cell_stmt ::=   attr TOK_ID  cell_parameter_list_opt cell_list ';'  |   attr tok_prim_wrapper  prim_list ';'
+cell_stmt ::=   attr IDENTIFIER  cell_parameter_list_opt cell_list ';'  |   attr tok_prim_wrapper  prim_list ';'
 tok_prim_wrapper ::=    TOK_PRIMITIVE  |    TOK_OR
 left  cell_list ::= single_cell |   cell_list ',' single_cell
-single_cell ::= TOK_ID  '(' cell_port_list ')'
+single_cell ::= IDENTIFIER  '(' cell_port_list ')'
 left  prim_list ::= single_prim |   prim_list ',' single_prim
 single_prim ::= single_cell |   /* no name */ '(' cell_port_list ')'
 cell_parameter_list_opt ::= '#' '(' cell_parameter_list ')' | /* empty */
 cell_parameter_list ::=
     /* empty */ | cell_parameter |
     cell_parameter ',' cell_parameter_list;
-cell_parameter ::=  expr  | '.' TOK_ID '(' expr ')'
+cell_parameter ::=  expr  | '.' IDENTIFIER '(' expr ')'
 cell_port_list ::=  cell_port | cell_port ',' cell_port_list |  /* empty */ ','  cell_port_list | /* empty */
 cell_port ::=   expr |
-    '.' TOK_ID '(' expr ')'  |
-    '.' TOK_ID '(' ')'
+    '.' IDENTIFIER '(' expr ')'  |
+    '.' IDENTIFIER '(' ')'
 always_stmt ::= attr TOK_ALWAYS always_cond   behavioral_stmt  |
     attr TOK_INITIAL behavioral_stmt
 always_cond ::= '@' '(' always_events ')' |
@@ -441,7 +251,7 @@ left always_events ::=      always_event |
     always_events TOK_OR always_event |
     always_events ',' always_event
 always_event ::=    TOK_POSEDGE expr |  TOK_NEGEDGE expr  | expr
-opt_label ::=   ':' TOK_ID  |   /* empty */
+opt_label ::=   ':' IDENTIFIER  |   /* empty */
 assert_ ::= TOK_ASSERT '(' expr ')' ';'
 simple_behavioral_stmt ::=  lvalue '=' expr  |  lvalue OP_LE expr
 // this production creates the obligatory if-else shift/reduce conflict
