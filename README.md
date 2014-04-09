@@ -7,7 +7,7 @@ Verilog Plugin for Intellij IDEA
 * parser
 
 ![](https://raw.githubusercontent.com/max6cn/verilogplugin/master/resources/setting.png)
-
+![](https://raw.githubusercontent.com/max6cn/verilogplugin/master/resources/psi.png)
 #### Features(Planed)
 
 * Lexer	
