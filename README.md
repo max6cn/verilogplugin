@@ -1,6 +1,6 @@
 ## Notice
 
-Due to a FS crash most progress has been lost, thus project has been paused until further notice
+Due to a FS crash most progress has been lost, this project has been paused until further notice
 
 ### Verilogplugin
 
