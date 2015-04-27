@@ -1,4 +1,8 @@
-### verilogplugin
+## Notice
+
+Due to a FS crash most progress has been lost, thus project has been paused until further notice
+
+### Verilogplugin
 
 Verilog Plugin for Intellij IDEA
 
